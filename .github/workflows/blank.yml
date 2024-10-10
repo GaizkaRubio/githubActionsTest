@@ -35,6 +35,9 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '8'
+      # Build the project using Maven
+      - name: Build with Maven
+        run: mvn clean package    
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo "Hello ${{ github.event.inputs.environment }}!"
