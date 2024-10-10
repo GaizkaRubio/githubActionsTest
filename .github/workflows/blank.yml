@@ -8,11 +8,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      branch:
-        description: "Select the branch to deploy"
-        required: true
-        default: "main"
-        type: string
       environment:
         description: "Select the environment (e.g., production, staging)"
         required: true
