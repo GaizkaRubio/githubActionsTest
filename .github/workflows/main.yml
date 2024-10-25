@@ -38,7 +38,7 @@ jobs:
           git checkout main
           git add pom.xml
           git commit -m "Bump development version to $new_version"
-          git push origin bumpVersion
+          git push -u origin bumpVersion
         env:
           new_version: ${{ steps.extract_version.outputs.new_version }}   
 
