@@ -34,8 +34,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch
-          git checkout remotes/origin/main
+          git fetch origin main:main
+          git checkout main
           git add pom.xml
           git commit -m "Bump development version to $new_version"
           git push origin main
