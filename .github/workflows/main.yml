@@ -36,5 +36,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git fetch
           git checkout remotes/origin/main
+          git add pom.xml
+          git commit -m "Bump development version to $new_version"
+          git push origin main
         env:
           new_version: ${{ steps.extract_version.outputs.new_version }}   
