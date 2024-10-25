@@ -21,16 +21,14 @@ jobs:
 
       - name: Get current version from tag
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          echo "Current version: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Increment development version
         run: |
-          IFS='.' read -r major minor patch <<< "$VERSION"
-          new_version="${major}.${minor+1}.$((patch))-SNAPSHOT"
-          mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
-          echo "New development version: $new_version"
+          new_version=$(echo "${VERSION%.*}.$((${VERSION##*.} + 1))-SNAPSHOT")
+          mvn versions:set -DnewVersion=$new_version
+        env:
+          VERSION: ${{ env.VERSION }}
 
       - name: Commit and push new version
         run: |
@@ -39,4 +37,6 @@ jobs:
           git checkout main
           git add pom.xml
           git commit -m "Bump development version to $new_version"
-          git push origin main    
+          git push origin main  
+        env:
+          new_version: ${{ steps.extract_version.outputs.new_version }}   
