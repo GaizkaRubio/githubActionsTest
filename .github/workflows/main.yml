@@ -28,6 +28,6 @@ jobs:
       - name: Increment development version
         run: |
           IFS='.' read -r major minor patch <<< "$VERSION"
-          new_version="${major}.${minor}.$((patch+1))-SNAPSHOT"
+          new_version="${major}.${minor+1}.$((patch))-SNAPSHOT"
           mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
           echo "New development version: $new_version"
