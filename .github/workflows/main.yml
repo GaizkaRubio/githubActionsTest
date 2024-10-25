@@ -25,7 +25,12 @@ jobs:
 
       - name: Increment development version
         run: |
-          new_version=$(echo "${VERSION%.*}.$((${VERSION%.*.*#*.} + 1)).0-SNAPSHOT")
+          major=$(echo $VERSION | cut -d. -f1)
+          minor=$(echo $VERSION | cut -d. -f2)
+          patch=$(echo $VERSION | cut -d. -f3)
+
+          new_minor=$((minor + 1))
+          new_version="$major.$new_minor.0-SNAPSHOT"
           mvn versions:set -DnewVersion=$new_version
         env:
           VERSION: ${{ env.VERSION }}
