@@ -38,6 +38,12 @@ jobs:
           git checkout main
           git add pom.xml
           git commit -m "Bump development version to $new_version"
-          git push origin main
+          git push origin bumpVersion
         env:
           new_version: ${{ steps.extract_version.outputs.new_version }}   
+
+      - name: Create a pull request
+        run: |
+          gh pr create --title "Update pom version" --body "This PR includes updates of pom.xml." --head bumpVersion --base main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
