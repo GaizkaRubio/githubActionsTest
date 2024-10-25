@@ -1,0 +1,32 @@
+name: Increment Development Version
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'  
+
+      - name: Get current version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "Current version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Increment development version
+        run: |
+          IFS='.' read -r major minor patch <<< "$VERSION"
+          new_version="${major}.${minor}.$((patch+1))-SNAPSHOT"
+          mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
+          echo "New development version: $new_version"
