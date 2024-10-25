@@ -31,3 +31,12 @@ jobs:
           new_version="${major}.${minor+1}.$((patch))-SNAPSHOT"
           mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
           echo "New development version: $new_version"
+
+      - name: Commit and push new version
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout develop
+          git add pom.xml
+          git commit -m "Bump development version to $new_version"
+          git push origin develop    
